@@ -80,13 +80,22 @@ export default class FSRTCPeerConnection {
       }
     };
 
-    peer.onaddstream = (event: any) => {
-      const remoteMediaStream = event.stream;
+    peer.ontrack = (event: any) => {
+      const remoteMediaStream = event.streams[0];
 
       if (onRemoteStream) {
         onRemoteStream(remoteMediaStream);
       }
     };
+
+    // MARK ARMAKOM Deprecated
+    // peer.onaddstream = (event: any) => {
+    //   const remoteMediaStream = event.stream;
+
+    //   if (onRemoteStream) {
+    //     onRemoteStream(remoteMediaStream);
+    //   }
+    // };
     
     // MARK ARMAKOM
     // peer.addStream(attachStream);
