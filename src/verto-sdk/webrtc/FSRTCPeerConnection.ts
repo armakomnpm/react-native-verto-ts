@@ -57,6 +57,7 @@ export default class FSRTCPeerConnection {
       }
     };
 
+
     peer.onicecandidate = event => {
       if (this.done) {
         return;
@@ -80,6 +81,9 @@ export default class FSRTCPeerConnection {
       }
     };
 
+  
+
+    
     peer.ontrack = (event: any) => {
       const remoteMediaStream = event.streams[0];
 
@@ -96,10 +100,10 @@ export default class FSRTCPeerConnection {
     //     onRemoteStream(remoteMediaStream);
     //   }
     // };
-    
+
     // MARK ARMAKOM
     // peer.addStream(attachStream);
-    
+
     const audioTracks = attachStream.getAudioTracks();
     peer.addTrack(audioTracks[0], attachStream);
 

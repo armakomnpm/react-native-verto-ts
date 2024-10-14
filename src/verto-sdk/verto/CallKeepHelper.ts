@@ -24,21 +24,21 @@ class CallKeepHelper {
     //#region Private Methods
 
     private addCall = (callUUID: string, number: string) => {
-        this.calls.set(callUUID, number);
+        // this.calls.set(callUUID, number);
     };
 
     private answerCall = ({ callUUID }) => {
-        const number = this.calls.get(callUUID);
-        printLog(this.showLogs, `[CallKeepHelper-answerCall] ${callUUID}, number: ${number}`);
-    
-        if(this.onIncomingCallAnswered) {
-            this.onIncomingCallAnswered(this.incomingCall, callUUID);
-        }
-        RNCallKeep.startCall(callUUID, number, number);
-        BackgroundTimer.setTimeout(() => {
-            printLog(this.showLogs, `[setCurrentCallActive] ${callUUID}, number: ${number}`);
-            RNCallKeep.setCurrentCallActive(callUUID);
-        }, 1000);
+        // const number = this.calls.get(callUUID);
+        // printLog(this.showLogs, `[CallKeepHelper-answerCall] ${callUUID}, number: ${number}`);
+
+        // if(this.onIncomingCallAnswered) {
+        //     this.onIncomingCallAnswered(this.incomingCall, callUUID);
+        // }
+        // RNCallKeep.startCall(callUUID, number, number);
+        // BackgroundTimer.setTimeout(() => {
+        //     printLog(this.showLogs, `[setCurrentCallActive] ${callUUID}, number: ${number}`);
+        //     RNCallKeep.setCurrentCallActive(callUUID);
+        // }, 1000);
     };
 
     // private audioSessionActivated = (data: any) => {
@@ -48,61 +48,61 @@ class CallKeepHelper {
     // };
 
     private didPerformDTMFAction = ({ callUUID, digits }) => {
-        const number = this.calls.get(callUUID);
-        printLog(this.showLogs, `[CallKeepHelper-didPerformDTMFAction] ${callUUID}, number: ${number} (${digits})`);
+        // const number = this.calls.get(callUUID);
+        // printLog(this.showLogs, `[CallKeepHelper-didPerformDTMFAction] ${callUUID}, number: ${number} (${digits})`);
     };
 
     private didReceiveStartCallAction = ({ handle }) => {
-        if (!handle) {
-          // @TODO: sometime we receive `didReceiveStartCallAction` with handle` undefined`
-          return;
-        }
-        const callUUID = this.getNewUuid();
-        this.addCall(callUUID, handle);
+        // if (!handle) {
+        //   // @TODO: sometime we receive `didReceiveStartCallAction` with handle` undefined`
+        //   return;
+        // }
+        // const callUUID = this.getNewUuid();
+        // this.addCall(callUUID, handle);
 
-        printLog(this.showLogs, `[CallKeepHelper-didReceiveStartCallAction] ${callUUID}, number: ${handle}`);
-    
+        // printLog(this.showLogs, `[CallKeepHelper-didReceiveStartCallAction] ${callUUID}, number: ${handle}`);
+
         // RNCallKeep.startCall(this.callUUID, handle, handle);
     };
 
     private didPerformSetMutedCallAction = ({ muted, callUUID }) => {
-        const number = this.calls.get(callUUID);
-        printLog(this.showLogs, `[CallKeepHelper-didPerformSetMutedCallAction] ${callUUID}, number: ${number} (${muted})`);
-    
-        this.setCallMuted(callUUID, muted);
+        // const number = this.calls.get(callUUID);
+        // printLog(this.showLogs, `[CallKeepHelper-didPerformSetMutedCallAction] ${callUUID}, number: ${number} (${muted})`);
+
+        // this.setCallMuted(callUUID, muted);
     };
-    
+
     private didToggleHoldCallAction = ({ hold, callUUID }) => {
-        const number = this.calls.get(callUUID);
-        printLog(this.showLogs, `[CallKeepHelper-didToggleHoldCallAction] ${callUUID}, number: ${number} (${hold})`);
+        // const number = this.calls.get(callUUID);
+        // printLog(this.showLogs, `[CallKeepHelper-didToggleHoldCallAction] ${callUUID}, number: ${number} (${hold})`);
     };
-    
+
     private endCall = ({ callUUID }) => {
-        const handle = this.calls.get(callUUID);
-        printLog(this.showLogs, `[CallKeepHelper-endCall] ${callUUID}, number: ${handle}`);
+        // const handle = this.calls.get(callUUID);
+        // printLog(this.showLogs, `[CallKeepHelper-endCall] ${callUUID}, number: ${handle}`);
 
-        this.removeCall(callUUID);
+        // this.removeCall(callUUID);
 
-        if(this.onCallEnded) {
-            this.onCallEnded(handle);
-        }
+        // if(this.onCallEnded) {
+        //     this.onCallEnded(handle);
+        // }
     };
 
     private getNewUuid = () => uuid.v4() as string;
 
     private removeCall = (callUUID: string) => {
-        this.calls.delete(callUUID);
+        //this.calls.delete(callUUID);
     };
 
     private setCallMuted = (callUUID: string, muted: boolean) => {
-        this.mutedCalls.set(callUUID, muted)
+        // this.mutedCalls.set(callUUID, muted)
     };
 
     private showIncomingCallUI = ({ callUUID, handle, name }) => {
-        printLog(this.showLogs, '[CallKeepHandler-showIncomingCallUI] callUUID:', callUUID, ' - handle:', handle, ' - name:', name);
-        if(this.onShowIncomingCallUI) {
-            this.onShowIncomingCallUI(handle, name);
-        }
+        // printLog(this.showLogs, '[CallKeepHandler-showIncomingCallUI] callUUID:', callUUID, ' - handle:', handle, ' - name:', name);
+        // if(this.onShowIncomingCallUI) {
+        //     this.onShowIncomingCallUI(handle, name);
+        // }
     }
 
     //#region Event Listener Methods
@@ -111,33 +111,33 @@ class CallKeepHelper {
      * Add event listeners for RNCallKeep events
      */
     private subscribeToListeners = () => {
-        RNCallKeep.addEventListener('answerCall', this.answerCall);
-        RNCallKeep.addEventListener('didPerformDTMFAction', this.didPerformDTMFAction);
-        RNCallKeep.addEventListener('didReceiveStartCallAction', this.didReceiveStartCallAction);
-        RNCallKeep.addEventListener('didPerformSetMutedCallAction', this.didPerformSetMutedCallAction);
-        RNCallKeep.addEventListener('didToggleHoldCallAction', this.didToggleHoldCallAction);
-        RNCallKeep.addEventListener('endCall', this.endCall);
-       // RNCallKeep.addEventListener('didActivateAudioSession', this.audioSessionActivated);
-        if(Platform.OS === 'android') {
-            RNCallKeep.addEventListener('showIncomingCallUi', this.showIncomingCallUI)
-        }
+        //     RNCallKeep.addEventListener('answerCall', this.answerCall);
+        //     RNCallKeep.addEventListener('didPerformDTMFAction', this.didPerformDTMFAction);
+        //     RNCallKeep.addEventListener('didReceiveStartCallAction', this.didReceiveStartCallAction);
+        //     RNCallKeep.addEventListener('didPerformSetMutedCallAction', this.didPerformSetMutedCallAction);
+        //     RNCallKeep.addEventListener('didToggleHoldCallAction', this.didToggleHoldCallAction);
+        //     RNCallKeep.addEventListener('endCall', this.endCall);
+        //    // RNCallKeep.addEventListener('didActivateAudioSession', this.audioSessionActivated);
+        //     if(Platform.OS === 'android') {
+        //         RNCallKeep.addEventListener('showIncomingCallUi', this.showIncomingCallUI)
+        //     }
     }
 
     /**
      * Remove event listeners for RNCallKeep events
      */
     private unsubscribeToListeners = () => {
-        RNCallKeep.removeEventListener('answerCall');
-        RNCallKeep.removeEventListener('didPerformDTMFAction');
-        RNCallKeep.removeEventListener('didReceiveStartCallAction');
-        RNCallKeep.removeEventListener('didPerformSetMutedCallAction');
-        RNCallKeep.removeEventListener('didToggleHoldCallAction');
-        RNCallKeep.removeEventListener('endCall');
-        RNCallKeep.removeEventListener('didActivateAudioSession');
+        // RNCallKeep.removeEventListener('answerCall');
+        // RNCallKeep.removeEventListener('didPerformDTMFAction');
+        // RNCallKeep.removeEventListener('didReceiveStartCallAction');
+        // RNCallKeep.removeEventListener('didPerformSetMutedCallAction');
+        // RNCallKeep.removeEventListener('didToggleHoldCallAction');
+        // RNCallKeep.removeEventListener('endCall');
+        // RNCallKeep.removeEventListener('didActivateAudioSession');
 
-        if(Platform.OS === 'android') {
-            RNCallKeep.removeEventListener('showIncomingCallUi');
-        }
+        // if(Platform.OS === 'android') {
+        //     RNCallKeep.removeEventListener('showIncomingCallUi');
+        // }
     }
 
     //#endregion
@@ -147,92 +147,93 @@ class CallKeepHelper {
     //#region Public Methods
 
     public destroy = () => {
-        this.unsubscribeToListeners();
+        // this.unsubscribeToListeners();
     }
 
     public displayIncomingCall = (callInfoParams: CallInfoParams, incomingCall: Call) => {
-        this.incomingCall = incomingCall;
+        // this.incomingCall = incomingCall;
 
-        const incomingCallUUID = this.getNewUuid();
-        this.calls.set(incomingCallUUID, callInfoParams.from);
-        printLog(this.showLogs, '[CallKeepHelper-displayIncomingCall] callUUID:', incomingCallUUID, ' - callInfoParams:', callInfoParams);
-        RNCallKeep.displayIncomingCall(incomingCallUUID, callInfoParams.from, callInfoParams.callerName, 'generic', callInfoParams.useVideo);
+        // const incomingCallUUID = this.getNewUuid();
+        // this.calls.set(incomingCallUUID, callInfoParams.from);
+        // printLog(this.showLogs, '[CallKeepHelper-displayIncomingCall] callUUID:', incomingCallUUID, ' - callInfoParams:', callInfoParams);
+        // RNCallKeep.displayIncomingCall(incomingCallUUID, callInfoParams.from, callInfoParams.callerName, 'generic', callInfoParams.useVideo);
     }
 
     public hangup = (callUUID: string) => {
-        if(callUUID) {
-            RNCallKeep.endCall(callUUID);
-        } else {
-            printLog(this.showLogs, '[CallKeepHelper-hangup] callUUID is undefined');
-        }
+        // if(callUUID) {
+        //     RNCallKeep.endCall(callUUID);
+        // } else {
+        //     printLog(this.showLogs, '[CallKeepHelper-hangup] callUUID is undefined');
+        // }
     };
 
     public setOnMute = (callUUID: string, muted: boolean) => {
-        const handle = this.calls.get(callUUID);
-        printLog(this.showLogs, `[CallKeepHelper-setMutedCall: ${muted}] ${callUUID}, number: ${handle}`);
-    
-        RNCallKeep.setMutedCall(callUUID, muted);
-        this.setCallMuted(callUUID, muted);
+        // const handle = this.calls.get(callUUID);
+        // printLog(this.showLogs, `[CallKeepHelper-setMutedCall: ${muted}] ${callUUID}, number: ${handle}`);
+
+        // RNCallKeep.setMutedCall(callUUID, muted);
+        // this.setCallMuted(callUUID, muted);
     };
 
     /**
      * Initialize RNCallKeep with both ios and android
      */
     public setup = (
-        showsLog = false, 
+        showsLog = false,
         selfManaged = true,
-        onIncomingCallAnswered?: (incomingCall: Call, callUUID: string) => void, 
-        onCallEnded?: (handle: string) => void, onShowIncomingCallUI?: 
-        (handle: string, name: string) => void) => {
-        this.showLogs = showsLog;
-        try {
-            RNCallKeep.setup({
-                ios: {
-                    appName: 'CallKeepDemo',
-                },
-                android: {
-                    alertTitle: 'Permissions required',
-                    alertDescription: 'This application needs to access your phone accounts',
-                    cancelButton: 'Cancel',
-                    okButton: 'ok',
-                    additionalPermissions: [PermissionsAndroid.PERMISSIONS.READ_CONTACTS],
-                    selfManaged
-                },
-            });
-            RNCallKeep.setAvailable(true);
+        onIncomingCallAnswered?: (incomingCall: Call, callUUID: string) => void,
+        onCallEnded?: (handle: string) => void, onShowIncomingCallUI?:
+            (handle: string, name: string) => void) => {
+        // this.showLogs = showsLog;
+        // try {
+        //     RNCallKeep.setup({
+        //         ios: {
+        //             appName: 'CallKeepDemo',
+        //         },
+        //         android: {
+        //             alertTitle: 'Permissions required',
+        //             alertDescription: 'This application needs to access your phone accounts',
+        //             cancelButton: 'Cancel',
+        //             okButton: 'ok',
+        //             additionalPermissions: [PermissionsAndroid.PERMISSIONS.READ_CONTACTS],
+        //             selfManaged
+        //         },
+        //     });
+        //     RNCallKeep.setAvailable(true);
 
-            this.onIncomingCallAnswered = onIncomingCallAnswered;
-            this.onCallEnded = onCallEnded;
-            this.onShowIncomingCallUI = onShowIncomingCallUI;
+        //     this.onIncomingCallAnswered = onIncomingCallAnswered;
+        //     this.onCallEnded = onCallEnded;
+        //     this.onShowIncomingCallUI = onShowIncomingCallUI;
 
-            printLog(this.showLogs, '[CallKeepHelper-setup] finished setting up CallKeep');
-            this.subscribeToListeners();
-            printLog(this.showLogs, '[CallKeepHelper-setup] finished subscription to listeners');
-        } catch(error) {
-            printLog(this.showLogs, '[CallKeepHelper-setup] error occurred when setting up Call Keep. error:', error);
-        }
+        //     printLog(this.showLogs, '[CallKeepHelper-setup] finished setting up CallKeep');
+        //     this.subscribeToListeners();
+        //     printLog(this.showLogs, '[CallKeepHelper-setup] finished subscription to listeners');
+        // } catch(error) {
+        //     printLog(this.showLogs, '[CallKeepHelper-setup] error occurred when setting up Call Keep. error:', error);
+        // }
     }
 
     public startCall = ({ handle, localizedCallerName }): string => {
         // Your normal start call action
-        const callUUID = this.getNewUuid();
-        this.calls.set(callUUID, handle);
-        printLog(this.showLogs, `[CallKeepHelper-startCall] 1 handle: ${handle}, localizedCallerName: ${localizedCallerName}, uuid: ${callUUID}`);
-        RNCallKeep.startCall(callUUID, handle, localizedCallerName);
-        printLog(this.showLogs, `[CallKeepHelper-startCall] 2 handle: ${handle}, localizedCallerName: ${localizedCallerName}, uuid: ${callUUID}`);
-        return callUUID;
+        // const callUUID = this.getNewUuid();
+        // this.calls.set(callUUID, handle);
+        // printLog(this.showLogs, `[CallKeepHelper-startCall] 1 handle: ${handle}, localizedCallerName: ${localizedCallerName}, uuid: ${callUUID}`);
+        // RNCallKeep.startCall(callUUID, handle, localizedCallerName);
+        // printLog(this.showLogs, `[CallKeepHelper-startCall] 2 handle: ${handle}, localizedCallerName: ${localizedCallerName}, uuid: ${callUUID}`);
+        // return callUUID;
+        return null;
     };
 
     public updateDisplay = (callUUID: string) => {
-        const number = this.calls.get(callUUID);
-        printLog(this.showLogs, `[CallKeepHelper-updateDisplay: ${number}] ${callUUID}`);
+        // const number = this.calls.get(callUUID);
+        // printLog(this.showLogs, `[CallKeepHelper-updateDisplay: ${number}] ${callUUID}`);
 
-        // Workaround because Android doesn't display well displayName, se we have to switch ...
-        if (Platform.OS === 'ios') {
-          RNCallKeep.updateDisplay(callUUID, 'New Name', number);
-        } else {
-          RNCallKeep.updateDisplay(callUUID, number, 'New Name');
-        }
+        // // Workaround because Android doesn't display well displayName, se we have to switch ...
+        // if (Platform.OS === 'ios') {
+        //   RNCallKeep.updateDisplay(callUUID, 'New Name', number);
+        // } else {
+        //   RNCallKeep.updateDisplay(callUUID, number, 'New Name');
+        // }
     };
 
     //#endregion

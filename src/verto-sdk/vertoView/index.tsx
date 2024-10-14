@@ -57,7 +57,7 @@ const VertoView = (props: Props) => {
   const [isStreamStarted, setStreamStarted] = useState(false);
 
   const [audioFileIndex, setAudioFileIndex] = useState(ToolboxImage.Audio);
-  const [videoFileIndex, setVideoFileIndex] = useState(ToolboxImage.Video);
+  const [videoFileIndex, setVideoFileIndex] = useState(ToolboxImage.NoVideo);
 
   const [viewType, setViewType] = useState(ViewType.remote);
 
@@ -415,18 +415,46 @@ const VertoView = (props: Props) => {
 
   const videoSwitchHandler = () => {
     // burak
+    // TODO Burası eklenecek verto-ts'e
     console.log("index.tsx => localStream: " + JSON.stringify(localStream))
     const localVideoTrack = localStream && localStream.getVideoTracks() && localStream.getVideoTracks()[0];
     console.log("index.tsx => localVideoTrack: " + localVideoTrack)
+    console.log("videoSwitchHandler 1")
 
     if (localVideoTrack == null) {
-      VertoInstanceManager.startLocalStream(call.getId(), 'video')
+      console.log("videoSwitchHandler 2")
+
+      VertoInstanceManager.startLocalStream(call.getId(), 'video');
+
+      setTimeout(() => {
+        const localVideoTrack2 = localStream && localStream.getVideoTracks() && localStream.getVideoTracks()[0];
+
+        localVideoTrack2.enabled = !localVideoTrack2.enabled;
+        if (localVideoTrack2.enabled) {
+          console.log("videoSwitchHandler 4")
+
+          setVideoFileIndex(ToolboxImage.Video);
+          setViewType(ViewType.both);
+        } else {
+          console.log("videoSwitchHandler 5")
+
+          setVideoFileIndex(ToolboxImage.NoVideo);
+          setViewType(ViewType.remote);
+        }
+      }, 1000)
+
     } else {
+      console.log("videoSwitchHandler 3")
+
       localVideoTrack.enabled = !localVideoTrack.enabled;
       if (localVideoTrack.enabled) {
+        console.log("videoSwitchHandler 4")
+
         setVideoFileIndex(ToolboxImage.Video);
         setViewType(ViewType.both);
       } else {
+        console.log("videoSwitchHandler 5")
+
         setVideoFileIndex(ToolboxImage.NoVideo);
         setViewType(ViewType.remote);
       }

@@ -155,9 +155,9 @@ export default class VertinhoClient {
 
     this.webSocket.onclose = (event) => {
       this.callbacks.onClientClose();
-      if(this.webSocket != null) {
-        return;
-      }
+      // if(this.webSocket != null) {
+      //   return;
+      // }
       console.log('WebSocket closed, attempting to connect again in 10s.', event);
       this.retryingTimer = BackgroundTimer.setTimeout(() => {
         if (this.webSocket != null)
